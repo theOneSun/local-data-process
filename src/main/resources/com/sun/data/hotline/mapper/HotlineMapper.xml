@@ -115,4 +115,16 @@
     <select id="listByYearAndHalf" resultType="com.sun.data.hotline.domain.HotlineScore">
         SELECT * FROM hotline_score WHERE year = #{year} AND half_year = #{halfYear}
     </select>
+    <!--服务礼仪查询-->
+    <select id="listPilotByYearAndHalf" resultType="com.sun.data.hotline.domain.HotlineScore">
+        SELECT city,city_id,reception_etiquette FROM hotline_score where `year` = #{year} AND half_year = #{halfYear} ORDER BY reception_etiquette DESC;
+    </select>
+    <!--沟通技巧-->
+    <select id="listSkillYearAndHalf" resultType="com.sun.data.hotline.domain.HotlineScore">
+        SELECT city,city_id,communication_skill FROM hotline_score where `year` =  #{year} AND half_year = #{halfYear} ORDER BY communication_skill DESC;
+    </select>
+    <!--问题解决-->
+    <select id="listSolveResponseByYearAndHalf" resultType="com.sun.data.hotline.domain.HotlineScore">
+        SELECT city,city_id,solve_status FROM hotline_score where `year` = #{year} AND half_year = #{halfYear} ORDER BY solve_status DESC;
+    </select>
 </mapper>

@@ -31,7 +31,7 @@
           connection_rate_rank,
           connection_rate_change
         FROM hotline_score
-        WHERE year = 2018 AND half_year = '上半年'
+        WHERE year = #{year} AND half_year = #{halfYear}
         ORDER BY connection_rate_rank;
     </select>
     <select id="listComprehensiveIncrease" resultType="com.sun.data.hotline.domain.HotlineScore">

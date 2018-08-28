@@ -66,4 +66,11 @@ public interface HotlineMapper
 
     // 修改排名变化
     int updateRankChange(@Param("list") List<HotlineScore> list);
+
+    //查询服务礼仪(按照得分降序排序)
+    List<HotlineScore> listPilotByYearAndHalf(@Param("year") int year ,@Param("halfYear") String halfYear);
+    //查询沟通技巧(按照得分降序排序)
+    List<HotlineScore> listSkillYearAndHalf(@Param("year") int year ,@Param("halfYear") String halfYear);
+    //查询问题解决(按照得分降序排序)
+    List<HotlineScore> listSolveResponseByYearAndHalf(@Param("year") int year ,@Param("halfYear") String halfYear);
 }

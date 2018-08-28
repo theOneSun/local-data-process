@@ -30,7 +30,7 @@ public interface RankingMapper
     int batchUpdateChange(@Param("rankingList")List<Ranking> rankingList);
 
     //接通率榜单查询
-    List<HotlineScore> listConnectionRateList();
+    List<HotlineScore> listConnectionRateList(@Param("year") int year,@Param("halfYear") String halfYear);
 
     //批量新增
     int batchInsert(@Param("insertList")List<Ranking> insertList);
