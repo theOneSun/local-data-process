@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sun.data.hotline.mapper.HotlineMapper">
+
+
+    <!--批量新增-->
+    <insert id="batchInsertHotlineScore">
+        INSERT INTO hotline_score (id, city, year, half_year, reception_etiquette, communication_skill,
+        solve_status, service_level_score, service_level_rank, service_level_change,
+        comprehensive_score, comprehensive_rank, comprehensive_change, greeting,
+        self_introduction, ask_demand, mandarin, speed_distinct, query_sorry,
+        ask_demand_again, farewell, thanks, quest_evaluate, attitude, no_shuffle,
+        fast_find_problem, explain_clear_process, explain_clear_policy, patience,
+        ask_detail, expression_clear) VALUES
+        <foreach collection="insertList" separator="),(" open="(" close=")" item="hotlineScore">
+            #{hotlineScore.id},#{hotlineScore.city},#{hotlineScore.year},
+            #{hotlineScore.halfYear},#{hotlineScore.receptionEtiquette},#{hotlineScore.communicationSkill},
+            #{hotlineScore.solveStatus},#{hotlineScore.serviceLevelScore},#{hotlineScore.serviceLevelRank},
+            #{hotlineScore.serviceLevelChange},#{hotlineScore.comprehensiveScore},#{hotlineScore.comprehensiveRank},
+            #{hotlineScore.comprehensiveChange},#{hotlineScore.greeting},#{hotlineScore.selfIntroduction},
+            #{hotlineScore.askDemand},#{hotlineScore.mandarin},#{hotlineScore.speedDistinct},
+            #{hotlineScore.querySorry},#{hotlineScore.askDemandAgain},#{hotlineScore.farewell},
+            #{hotlineScore.thanks},#{hotlineScore.attitude},
+            #{hotlineScore.noShuffle},#{hotlineScore.fastFindProblem},#{hotlineScore.explainClearProcess},
+            #{hotlineScore.explainClearPolicy},#{hotlineScore.patience},#{hotlineScore.askDetail},
+            #{hotlineScore.expressionClear}
+        </foreach>
+    </insert>
+    <insert id="batchInsertHotlineScore2">
+        INSERT INTO hotline_score (id, city_id, city, year, half_year, hundred_index_count, hundred_index_count_rank,
+        through_connection_score, reception_etiquette, communication_skill, solve_status, service_level_score, service_level_rank, service_level_change,
+        no_rate_score, no_rate_rank, no_rate_change, comprehensive_score, comprehensive_rank, comprehensive_change,
+        greeting, self_introduction, ask_demand, mandarin, speed_distinct, query_sorry, ask_demand_again, farewell, thanks,
+        attitude, no_shuffle, fast_find_problem, explain_clear_process, explain_clear_policy, patience, ask_detail, expression_clear,
+        connection_rate, connection_rate_rank, connection_rate_change) VALUES
+        <foreach collection="insertList" item="hotlineScore" open="(" separator="),(" close=")">
+            #{hotlineScore.id},#{hotlineScore.cityId},#{hotlineScore.city},#{hotlineScore.year},
+            #{hotlineScore.halfYear},#{hotlineScore.hundredIndexCount},#{hotlineScore.hundredIndexCountRank},
+            #{hotlineScore.throughConnectionScore},#{hotlineScore.receptionEtiquette},#{hotlineScore.communicationSkill},
+            #{hotlineScore.solveStatus},#{hotlineScore.serviceLevelScore},#{hotlineScore.serviceLevelRank},
+            #{hotlineScore.serviceLevelChange},#{hotlineScore.noRateScore},#{hotlineScore.noRateRank},
+            #{hotlineScore.noRateChange},#{hotlineScore.comprehensiveScore},#{hotlineScore.comprehensiveRank},
+            #{hotlineScore.comprehensiveChange},#{hotlineScore.greeting},#{hotlineScore.selfIntroduction},
+            #{hotlineScore.askDemand},#{hotlineScore.mandarin},#{hotlineScore.speedDistinct},
+            #{hotlineScore.querySorry},#{hotlineScore.askDemandAgain},#{hotlineScore.farewell},
+            #{hotlineScore.thanks},#{hotlineScore.attitude},
+            #{hotlineScore.noShuffle},#{hotlineScore.fastFindProblem},#{hotlineScore.explainClearProcess},
+            #{hotlineScore.explainClearPolicy},#{hotlineScore.patience},#{hotlineScore.askDetail},
+            #{hotlineScore.expressionClear},#{hotlineScore.connectionRate},#{hotlineScore.connectionRateRank},
+            #{hotlineScore.connectionRateChange}
+        </foreach>
+    </insert>
+    <update id="batchUpdate">
+        UPDATE base_product_attribute
+            SET value = CASE id
+            <foreach collection="attributeList" item="attribute" separator=" " >
+                WHEN #{attribute.id} THEN #{attribute.value}
+            </foreach>
+            END
+        WHERE id IN
+        <foreach collection="attributeList" open="(" separator="," close=")" item="attribute">
+            #{attribute.id}
+        </foreach>
+        AND product_type_id = 'cffaf02f4079477ba1ef22e2891ccd0b';
+    </update>
+
+    <update id="updateCityId">
+        UPDATE hotline_score
+        SET city_id = CASE id
+        <foreach collection="hotlineScoreList" separator=" " item="score">
+            WHEN #{score.id} THEN #{score.cityId}
+        </foreach>
+        END
+        WHERE id IN
+        <foreach collection="hotlineScoreList" item="score" separator="," open="(" close=")">
+            #{score.id}
+        </foreach>
+    </update>
+    <!--修改排名变化-->
+    <update id="updateRankChange">
+        UPDATE hotline_score SET
+          service_level_change = CASE id
+        <foreach collection="list" separator=" " item="score">
+          WHEN #{score.id} THEN #{score.serviceLevelChange}
+        </foreach>
+          END ,
+          comprehensive_change = CASE id
+        <foreach collection="list" separator=" " item="score">
+          WHEN #{score.id} THEN #{score.comprehensiveChange}
+        </foreach>
+          END,
+        no_rate_change = CASE id
+        <foreach collection="list" separator=" " item="score">
+            WHEN #{score.id} THEN #{score.noRateChange}
+        </foreach>
+        END ,
+        connection_rate_change = CASE id
+        <foreach collection="list" separator=" " item="score">
+            WHEN #{score.id} THEN #{score.connectionRateChange}
+        </foreach>
+        END
+        WHERE id IN
+        <foreach collection="list" open="(" item="score" separator="," close=")">
+            #{score.id}
+        </foreach>
+    </update>
+    <!-- 根据城市查询 -->
+    <select id="listByCity" resultType="com.sun.data.hotline.domain.AreaDictionaries">
+        SELECT * FROM base_area_dictionaries WHERE areaname IN
+        <foreach collection="scoreList" open="(" item="score" close=")" separator=",">
+            #{score.city}
+        </foreach>
+    </select>
+    <!--根据时间参数选数据-->
+    <select id="listByYearAndHalf" resultType="com.sun.data.hotline.domain.HotlineScore">
+        SELECT * FROM hotline_score WHERE year = #{year} AND half_year = #{halfYear}
+    </select>
+</mapper>

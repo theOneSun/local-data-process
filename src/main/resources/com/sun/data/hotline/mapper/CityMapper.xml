@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sun.data.hotline.mapper.CityMapper">
+
+
+    <update id="updateCityFirstHalf">
+        UPDATE hotline_score
+          SET city = CASE city
+            WHEN '伊犁' THEN '伊犁州'
+            WHEN '凉山' THEN '凉山州'
+            WHEN '博州' THEN '博尔塔拉州'
+            WHEN '嘉酒' THEN '酒泉'
+            WHEN '平潭' THEN '平潭县'
+            WHEN '延吉州' THEN '延吉'
+            WHEN '海东' THEN '海东地区'
+            WHEN '海西' THEN '海西州'
+            WHEN '玉树藏族自治州' THEN '玉树州'
+            WHEN '黄南藏族自治州' THEN '黄南州'
+            WHEN '黔南' THEN '黔南州'
+            WHEN '黔西南' THEN '黔西南州'
+            END
+        WHERE city IN ('伊犁','凉山','博州','嘉酒','平潭','延吉州','海东','海西','玉树藏族自治州','黄南藏族自治州','黔南','黔西南');
+    </update>
+    <update id="updateUserPermissionCity">
+        UPDATE dc_hotline_user_permission
+          SET city = CASE city
+            WHEN '伊犁' THEN '伊犁州'
+            WHEN '凉山' THEN '凉山州'
+            WHEN '博州' THEN '博尔塔拉州'
+            WHEN '嘉酒' THEN '酒泉'
+            WHEN '平潭' THEN '平潭县'
+            WHEN '延吉州' THEN '延吉'
+            WHEN '海东' THEN '海东地区'
+            WHEN '海西' THEN '海西州'
+            WHEN '玉树藏族自治州' THEN '玉树州'
+            WHEN '黄南藏族自治州' THEN '黄南州'
+            WHEN '黔南' THEN '黔南州'
+            WHEN '黔西南' THEN '黔西南州'
+            END
+        WHERE city IN ('伊犁','凉山','博州','嘉酒','平潭','延吉州','海东','海西','玉树藏族自治州','黄南藏族自治州','黔南','黔西南');
+    </update>
+
+    <!--<update id="updateCityIdUserPermission">
+        UPDATE dc_hotline_user_permission
+        SET city_id = CASE id
+        <foreach collection="hotlineScoreList" separator=" " item="score">
+            WHEN #{score.id} THEN #{score.cityId}
+        </foreach>
+        END
+        WHERE id IN
+        <foreach collection="hotlineScoreList" item="score" separator="," open="(" close=")">
+            #{score.id}
+        </foreach>
+    </update>-->
+
+</mapper>

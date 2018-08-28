@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sun.data.hotline.mapper.AreaDictionaryMapper">
+
+
+    <select id="listAllByAreaName" resultType="com.sun.data.hotline.domain.AreaDictionaries">
+        SELECT * FROM base_area_dictionaries WHERE areaname IN
+        <foreach collection="cityList" open="(" close=")" separator="," item="city">
+            #{city}
+        </foreach>
+    </select>
+</mapper>

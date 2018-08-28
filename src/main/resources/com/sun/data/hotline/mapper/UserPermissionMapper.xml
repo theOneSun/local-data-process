@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sun.data.hotline.mapper.UserPermissionMapper">
+    <update id="updatePermissionCityId">
+        UPDATE dc_hotline_user_permission
+        SET city_id = CASE id
+        <foreach collection="permissionList" separator=" " item="permission">
+            WHEN #{permission.id} THEN #{permission.cityId}
+        </foreach>
+        END
+        WHERE id IN
+        <foreach collection="permissionList" item="permission" separator="," open="(" close=")">
+            #{permission.id}
+        </foreach>
+    </update>
+
+
+    <select id="listAllHasPermission" resultType="com.sun.data.hotline.domain.UserPermission">
+        SELECT *
+        FROM dc_hotline_user_permission
+        WHERE general_information = 1 OR reception_index = 1 OR response_index = 1 OR communication_index = 1;
+    </select>
+    <!--根据userPermission的城市查询对应的城市id-->
+    <select id="listUserPermissionCity" resultType="com.sun.data.hotline.domain.AreaDictionaries">
+        SELECT * FROM base_area_dictionaries WHERE areaname IN (SELECT city FROM dc_hotline_user_permission GROUP BY city);
+    </select>
+
+</mapper>
